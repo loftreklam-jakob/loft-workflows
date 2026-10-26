@@ -1,0 +1,23 @@
+name: Playwright
+
+on:
+  workflow_call:
+    inputs:
+      test-command:
+        type: string
+        default: pytest
+
+jobs:
+  test:
+    runs-on: ubuntu-latest
+    container:
+      # Taggen måste matcha playwright-versionen i requirements.txt
+      image: mcr.microsoft.com/playwright/python:v1.64.1-noble
+    steps:
+      - uses: actions/checkout@v4
+
+      - name: Installera beroenden
+        run: pip install -r requirements.txt
+
+      - name: Kör tester
+        run: ${{ inputs.test-command }}
